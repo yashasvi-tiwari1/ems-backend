@@ -23,28 +23,6 @@ router.post("/add", async (req, res) => {
       res.send("you are not an employee")
     }
   });
-const HMACSHA256 = (stringToSign, secret) => "not_implemented"
-
-const header = {
-  "alg": "HS256",
-  "typ": "JWT",
-  "kid": "vpaas-magic-cookie-1fc542a3e4414a44b2611668195e2bfe/4f4910"
-}
-const encodedHeaders = btoa(JSON.stringify(header))
-
-
-
-const claims = {
-  "role": "admin"
-}
-const encodedPlayload = btoa(JSON.stringify(claims))
-
-
-const signature = HMACSHA256(`${encodedHeaders}.${encodedPlayload}`, "mysecret")
-const encodedSignature = btoa(signature)
-
-const jwt = `${encodedHeaders}.${encodedPlayload}.${encodedSignature}`
-console.log({jwt})
 
 router.post("/login", async (req, res) => {
   const { gmail, password } = req.body;
