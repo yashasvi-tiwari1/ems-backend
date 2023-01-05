@@ -32,21 +32,21 @@ router.post("/add", async (req, res) => {
               res.send(err);
             }
           } else {
-            res.send("you are not an employee");
+            res.status(403).send("you are not an employee");
           }
         } else {
-          res.send(
+          res.status(403).send(
             "password must contain at-least one number and Uppercase letter"
           );
         }
       } else {
-        res.send("password length must be at-least 8 characters");
+        res.status(403).send("password length must be at-least 8 characters");
       }
     } else {
-      res.send("Email format doesnot match");
+      res.status(403).send("Email format doesnot match");
     }
   } else {
-    res.send("please fill up the form first");
+    res.status(403).send("please fill up the form first");
   }
 });
 
