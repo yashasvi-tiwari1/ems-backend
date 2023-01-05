@@ -67,14 +67,14 @@ router.post("/login", async (req, res) => {
           let accessToken = generateAccessToken(tokeninfo);
           let refreshToken = generateRefreshToken(tokeninfo);
           res
-            .sendStatus(200)
+            .status(200)
             .json({ AccessToken: accessToken, RefreshToken: refreshToken });
         } else {
-          res.sendStatus(403).send("password does not match");
+          res.status(403).send("password does not match");
         }
       });
     } else {
-      res.sendStatus(403).send("No user for this gmail");
+      res.status(403).send("No user for this gmail");
     }
   } else {
     res.sendStatus(403).send("fill up the form first");
