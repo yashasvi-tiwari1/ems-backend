@@ -31,5 +31,6 @@ const employeeSchema = new mongoose.Schema({
     required:true,
   }
 });
+employeeSchema.index({'gmail':1})
 const EmployeeModel = mongoose.model("EmployeeModel", employeeSchema);
 export { EmployeeModel };

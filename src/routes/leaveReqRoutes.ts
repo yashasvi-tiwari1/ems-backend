@@ -1,22 +1,30 @@
 import express from "express";
 import { RequestModel } from "../models/leaveReqModel";
-
+import TokenValidation from "../middleware/tokenvalidation";
 const router = express.Router();
 
-router.get("/", async (req, res) => {
-  const requests = RequestModel.find();
-  res.send(requests);
+router.get("/", TokenValidation,async (req, res) => {
+  try {
+    const requests = RequestModel.find();
+    res.sendStatus(200).send(requests);
+  }
+  catch (err){
+    res.sendStatus(400).send(err);
+  }
 });
 router.post("/add", async (req, res) => {
-  const { name, date, reason, days, gmail, isAccepted, isActive } = req.body;
-
+  const { name, leavedate,returndate, reason,description,supervisor, gmail } = req.body;
+  let isActive = true;
+  let isAccepted = false;
   const addreq = new RequestModel({
     name,
-    date,
     reason,
-    days,
+    leavedate,
+    returndate,
+    description,
     isAccepted,
     isActive,
+    supervisor,
     gmail,
   });
   try {
@@ -27,14 +35,27 @@ router.post("/add", async (req, res) => {
   }
 });
 
-router.put("/acccept/:id", async (req, res) => {
-  const accReq = await RequestModel.findByIdAndUpdate(req.params.id, req.body);
-  res.sendStatus(200);
+router.put("/acccept/:id", TokenValidation, async (req, res) => {
+  try {
+    const accReq = await RequestModel.findByIdAndUpdate(req.params.id, req.body);
+    res.sendStatus(200);
+  }
+  catch (err){
+    res.sendStatus(400).send(err);
+  }
+
 });
 
-router.put("/reject/:id", async (req, res) => {
-  const accReq = await RequestModel.findByIdAndUpdate(req.params.id, req.body);
-  res.sendStatus(200);
+router.put("/reject/:id", TokenValidation,async (req, res) => {
+  try {
+    const accReq = await RequestModel.findByIdAndUpdate(req.params.id, req.body);
+    res.sendStatus(200);
+  }
+  catch (err){
+    res.sendStatus(400).send(err);
+  }
 });
+
+
 
 export { router as requestRouter };
