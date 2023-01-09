@@ -9,7 +9,7 @@ const requestSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  date: {
+  returndate: {
     type: Date,
     required: true,
   },
@@ -17,8 +17,16 @@ const requestSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  days: {
-    type: String,
+  description:{
+    type:String,
+    required:true,
+  },
+  supervisor:{
+    type:String,
+    required:true,
+  },
+  leavedate: {
+    type: Date,
     required: true,
   },
   isAccepted: {
