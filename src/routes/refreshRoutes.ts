@@ -11,21 +11,20 @@ router.post("/", async (req, res) => {
     const refreshToken = refToken.slice(7);
     console.log(refreshToken);
     const tokenInfo = jsonwebtoken.verify(
-        refreshToken,
-        `${process.env.REFRESH_TOKEN_SECRET}`
+      refreshToken,
+      `${process.env.REFRESH_TOKEN_SECRET}`
     );
     const string = JSON.stringify(tokenInfo);
     const realInfo = JSON.parse(string);
     const information = {
       role: realInfo.role,
       username: realInfo.username,
-    }
+    };
     const newAccesToken = generateAccessToken(information);
     console.log(newAccesToken);
-    res.sendStatus(201).send(newAccesToken);
-  }
-  catch (err){
-    res.sendStatus(401).send(err);
+    res.status(201).send(newAccesToken);
+  } catch (err) {
+    res.status(401).send(err);
   }
 });
 

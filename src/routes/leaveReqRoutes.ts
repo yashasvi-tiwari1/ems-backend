@@ -3,17 +3,24 @@ import { RequestModel } from "../models/leaveReqModel";
 import TokenValidation from "../middleware/tokenvalidation";
 const router = express.Router();
 
-router.get("/", TokenValidation,async (req, res) => {
+router.get("/", TokenValidation, async (req, res) => {
   try {
     const requests = RequestModel.find();
-    res.sendStatus(200).send(requests);
-  }
-  catch (err){
-    res.sendStatus(400).send(err);
+    res.status(200).send(requests);
+  } catch (err) {
+    res.status(400).send(err);
   }
 });
 router.post("/add", async (req, res) => {
-  const { name, leavedate,returndate, reason,description,supervisor, gmail } = req.body;
+  const {
+    name,
+    leavedate,
+    returndate,
+    reason,
+    description,
+    supervisor,
+    gmail,
+  } = req.body;
   let isActive = true;
   let isAccepted = false;
   const addreq = new RequestModel({
@@ -29,7 +36,7 @@ router.post("/add", async (req, res) => {
   });
   try {
     const request = await addreq.save();
-    res.sendStatus(201);
+    res.status(201);
   } catch (err) {
     res.send(err);
   }
@@ -37,25 +44,26 @@ router.post("/add", async (req, res) => {
 
 router.put("/acccept/:id", TokenValidation, async (req, res) => {
   try {
-    const accReq = await RequestModel.findByIdAndUpdate(req.params.id, req.body);
-    res.sendStatus(200);
+    const accReq = await RequestModel.findByIdAndUpdate(
+      req.params.id,
+      req.body
+    );
+    res.status(200);
+  } catch (err) {
+    res.status(400).send(err);
   }
-  catch (err){
-    res.sendStatus(400).send(err);
-  }
-
 });
 
-router.put("/reject/:id", TokenValidation,async (req, res) => {
+router.put("/reject/:id", TokenValidation, async (req, res) => {
   try {
-    const accReq = await RequestModel.findByIdAndUpdate(req.params.id, req.body);
-    res.sendStatus(200);
-  }
-  catch (err){
-    res.sendStatus(400).send(err);
+    const accReq = await RequestModel.findByIdAndUpdate(
+      req.params.id,
+      req.body
+    );
+    res.status(200);
+  } catch (err) {
+    res.status(400).send(err);
   }
 });
-
-
 
 export { router as requestRouter };

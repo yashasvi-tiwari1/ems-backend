@@ -24,7 +24,7 @@ router.post("/add", Validation, async (req, res) => {
     });
     try {
       adduser.save();
-      res.sendStatus(201);
+      res.status(201);
     } catch (err) {
       res.send(err);
     }
@@ -35,9 +35,9 @@ router.post("/add", Validation, async (req, res) => {
 
 router.post("/login", async (req, res) => {
   try {
-    const {gmail, password} = req.body;
+    const { gmail, password } = req.body;
     if (gmail && password) {
-      const user = await User.findOne({gmail});
+      const user = await User.findOne({ gmail });
       console.log(user);
       if (user) {
         let result = comparePassword(password, user.password);
@@ -47,12 +47,14 @@ router.post("/login", async (req, res) => {
               role: user.role,
               username: user.username,
             };
-
             let accessToken = generateAccessToken(tokeninfo);
             let refreshToken = generateRefreshToken(tokeninfo);
-            res
-                .status(200)
-                .json({AccessToken: accessToken, RefreshToken: refreshToken});
+            res.status(200).json({
+              AccessToken: accessToken,
+              RefreshToken: refreshToken,
+              role: user.role,
+              username: user.username,
+            });
           } else {
             res.status(403).send("password does not match");
           }
@@ -61,17 +63,16 @@ router.post("/login", async (req, res) => {
         res.status(403).send("No user for this gmail");
       }
     } else {
-      res.sendStatus(403).send("fill up the form first");
+      res.status(403).send("fill up the form first");
     }
-  }
-  catch (err){
-    res.sendStatus(401).send(err);
+  } catch (err) {
+    res.status(401).send(err);
   }
 });
 
 function generateAccessToken(tokenInfo: any) {
   return jsonwebtoken.sign(tokenInfo, `${accessSecretKey}`, {
-    expiresIn: "10m",
+    expiresIn: "1h",
   });
 }
 
