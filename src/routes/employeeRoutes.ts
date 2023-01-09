@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import { EmployeeModel } from "../models/employeeModel";
 import jsonwebtoken from "jsonwebtoken";
 import TokenValidation from "../middleware/tokenvalidation";
+import tokenvalidation from "../middleware/tokenvalidation";
 const router = express.Router();
 
 
@@ -10,7 +11,7 @@ router.get("/", [], async (req: any, res: any) => {
   res.send(employees);
 });
 
-router.post("/add", TokenValidation,async (req, res) => {
+router.post("/add", tokenvalidation,async (req, res) => {
 
   const { name, position, address, phone, gmail, date, role } = req.body;
     const data = await new EmployeeModel({

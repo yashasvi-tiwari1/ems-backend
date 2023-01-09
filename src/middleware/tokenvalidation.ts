@@ -12,7 +12,7 @@ const TokenValidation =  (req:Request,res:Response,next:NextFunction) =>{
     const decode = JSON.parse(`${string}`);
     console.log(decode);
     if(decode.role === 'admin' || decode.role === 'staff'){
-        next();
+        next()
     }
     else {
         res.send('you are not elligible to perform this task');

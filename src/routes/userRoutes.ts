@@ -79,7 +79,7 @@ router.post("/login", async (req, res) => {
   } else {
     res.sendStatus(403).send("fill up the form first");
   }
-});
+})
 
 function generateAccessToken(tokenInfo: any) {
   return jsonwebtoken.sign(tokenInfo, `${accessSecretKey}`, {
