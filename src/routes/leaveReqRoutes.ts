@@ -20,6 +20,7 @@ router.post("/add", async (req, res) => {
     description,
     supervisor,
     gmail,
+    department,
   } = req.body;
   let isActive = true;
   let isAccepted = false;
@@ -30,7 +31,8 @@ router.post("/add", async (req, res) => {
     returndate &&
     description &&
     supervisor &&
-    gmail
+    gmail &&
+    department
   ) {
     if (gmail.match(/(^\w{0,100}@gmail.com$|^\w{0,100}@outlook.com$)/g)) {
       const addreq = new RequestModel({
@@ -42,6 +44,7 @@ router.post("/add", async (req, res) => {
         isAccepted,
         isActive,
         supervisor,
+        department,
         gmail,
       });
       try {
