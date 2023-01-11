@@ -43,28 +43,34 @@ router.post("/login", async (req, res) => {
     const { gmail, password } = req.body;
     if (gmail && password) {
       const user = await User.findOne({ gmail });
-      if (user) {
-        let result = comparePassword(password, user.password);
-        bcrypt.compare(password, user.password, function (err, result) {
-          if (result) {
-            let tokeninfo = {
-              role: user.role,
-              username: user.username,
-            };
-            let accessToken = generateAccessToken(tokeninfo);
-            let refreshToken = generateRefreshToken(tokeninfo);
-            res.status(200).json({
-              AccessToken: accessToken,
-              RefreshToken: refreshToken,
-              role: user.role,
-              username: user.username,
-            });
-          } else {
-            res.status(403).send("password does not match");
-          }
-        });
+      const employer = await EmployeeModel.findOne({ gmail });
+      if (employer) {
+        if (user) {
+          let result = comparePassword(password, user.password);
+          bcrypt.compare(password, user.password, function (err, result) {
+            if (result) {
+              let tokeninfo = {
+                role: user.role,
+                username: user.username,
+              };
+              let accessToken = generateAccessToken(tokeninfo);
+              let refreshToken = generateRefreshToken(tokeninfo);
+              res.status(200).json({
+                AccessToken: accessToken,
+                RefreshToken: refreshToken,
+                role: user.role,
+                username: user.username,
+                id: employer._id,
+              });
+            } else {
+              res.status(403).send("password does not match");
+            }
+          });
+        } else {
+          res.status(403).send("No user for this gmail");
+        }
       } else {
-        res.status(403).send("No user for this gmail");
+        res.status(403).send("you are not an employee");
       }
     } else {
       res.status(403).send("fill up the form first");

@@ -17,13 +17,13 @@ const requestSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  description:{
-    type:String,
-    required:true,
+  description: {
+    type: String,
+    required: true,
   },
-  supervisor:{
-    type:String,
-    required:true,
+  supervisor: {
+    type: String,
+    required: true,
   },
   leavedate: {
     type: Date,
@@ -35,6 +35,10 @@ const requestSchema = new mongoose.Schema({
   },
   isActive: {
     type: Boolean,
+    required: true,
+  },
+  department: {
+    type: String,
     required: true,
   },
 });

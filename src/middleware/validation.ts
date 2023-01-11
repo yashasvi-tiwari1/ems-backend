@@ -6,7 +6,7 @@ import { User } from "../models/userModel";
 const Validation = (req: Request, res: Response, next: NextFunction) => {
   const { username, gmail, password, confirmpassword } = req.body;
   if (username && gmail && password && confirmpassword) {
-    if (gmail.match(/(^\w{0,100}@gmail.com$|^\w{0,100}@outlook.com$)/g)) {
+    if (gmail.match(/(^\w{1,100}@gmail.com$|^\w{1,100}@outlook.com$)/g)) {
       if (password.length > 8) {
         if (password.match(/([(0-9)(A-Z)])/g)) {
           next();
