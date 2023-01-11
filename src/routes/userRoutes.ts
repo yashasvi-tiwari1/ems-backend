@@ -11,23 +11,27 @@ dotenv.config();
 const accessSecretKey = process.env.ACCESS_TOKEN_SECRET;
 const refreshSecretKey = process.env.REFRESH_TOKEN_SECRET;
 router.post("/add", Validation, async (req, res) => {
-  console.log("xiryo bliss ma")
   const { username, gmail, password, confirmpassword } = req.body;
   const employee = await EmployeeModel.findOne({ gmail });
+  const user = await User.findOne({ gmail });
   if (employee) {
-    const role = employee.role;
-    const hashPassword = await bcrypt.hash(password, 10);
-    let adduser = new User({
-      username,
-      gmail,
-      password: hashPassword,
-      role,
-    });
-    try {
-      adduser.save();
-      res.status(201).send('user added');
-    } catch (err) {
-      res.send(err);
+    if (!user) {
+      const role = employee.role;
+      const hashPassword = await bcrypt.hash(password, 10);
+      let adduser = new User({
+        username,
+        gmail,
+        password: hashPassword,
+        role,
+      });
+      try {
+        adduser.save();
+        res.status(201);
+      } catch (err) {
+        res.send(err);
+      }
+    } else {
+      res.status(403).send("User already created");
     }
   } else {
     res.status(403).send("you are not an employee");
@@ -39,7 +43,6 @@ router.post("/login", async (req, res) => {
     const { gmail, password } = req.body;
     if (gmail && password) {
       const user = await User.findOne({ gmail });
-      console.log(user);
       if (user) {
         let result = comparePassword(password, user.password);
         bcrypt.compare(password, user.password, function (err, result) {
@@ -69,7 +72,7 @@ router.post("/login", async (req, res) => {
   } catch (err) {
     res.status(401).send(err);
   }
-})
+});
 
 function generateAccessToken(tokenInfo: any) {
   return jsonwebtoken.sign(tokenInfo, `${accessSecretKey}`, {
