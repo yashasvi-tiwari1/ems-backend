@@ -57,7 +57,7 @@ router.post("/add", async (req, res) => {
       res.status(401).send("Gmail format doesnot match");
     }
   } else {
-    res.status(401).send("Employee already exist");
+    res.status(401).send("Fill up the form");
   }
 });
 
