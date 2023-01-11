@@ -11,6 +11,7 @@ dotenv.config();
 const accessSecretKey = process.env.ACCESS_TOKEN_SECRET;
 const refreshSecretKey = process.env.REFRESH_TOKEN_SECRET;
 router.post("/add", Validation, async (req, res) => {
+  console.log("xiryo bliss ma")
   const { username, gmail, password, confirmpassword } = req.body;
   const employee = await EmployeeModel.findOne({ gmail });
   if (employee) {
@@ -24,7 +25,7 @@ router.post("/add", Validation, async (req, res) => {
     });
     try {
       adduser.save();
-      res.status(201);
+      res.status(201).send('user added');
     } catch (err) {
       res.send(err);
     }
