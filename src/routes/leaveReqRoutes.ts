@@ -104,6 +104,7 @@ router.get("/pending", TokenValidation, async (req, res) => {
       isActive: true,
       isAccepted: false,
     });
+    console.log(pendingrequests)
     res.status(200).send(pendingrequests);
   } catch (err) {
     res.status(403).send(err);
