@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import { RequestModel } from "../models/leaveReqModel";
 import TokenValidation from "../middleware/tokenvalidation";
 import { EmployeeModel } from "../models/employeeModel";
@@ -9,10 +9,42 @@ router.get("/", async (req, res) => {
     const requests = await RequestModel.find();
     res.status(200).send(requests);
   } catch (err) {
-    console.log('error ma aaxa');
+    console.log("error ma aaxa");
     res.status(401).send(err);
   }
 });
+router.get(
+  "/search/:searchkeyword",
+  [],
+  async (req: Request, res: Response) => {
+    try {
+      const search = req.params.searchkeyword;
+      const searchRequest = await RequestModel.find({
+        name: { $regex: ".*" + search + ".*" },
+      });
+      res.status(200).send(searchRequest);
+    } catch (err) {
+      res.status(401).send(err);
+    }
+  }
+);
+router.get(
+  "/search/pending/:searchkeyword",
+  [],
+  async (req: Request, res: Response) => {
+    try {
+      const search = req.params.searchkeyword;
+      const searchRequest = await RequestModel.find({
+        name: { $regex: ".*" + search + ".*" },
+        isAccepted: false,
+        isActive: true,
+      });
+      res.status(201).send(searchRequest);
+    } catch (err) {
+      res.status(401).send(err);
+    }
+  }
+);
 router.post("/add", async (req, res) => {
   const {
     name,
@@ -76,10 +108,10 @@ router.put("/accept/:id", TokenValidation, async (req, res) => {
       req.params.id,
       req.body
     );
-    console.log('yeta aaxa')
+    console.log("yeta aaxa");
     res.status(200).send("Request Accepted");
   } catch (err) {
-    console.log('uta aaxa')
+    console.log("uta aaxa");
     res.status(400).send(err);
   }
 });
@@ -89,7 +121,6 @@ router.put("/reject/:id", TokenValidation, async (req, res) => {
     const accReq = await RequestModel.findByIdAndUpdate(
       req.params.id,
       req.body
-
     );
     res.status(200).send("Request rejected");
   } catch (err) {
@@ -104,17 +135,16 @@ router.get("/pending", TokenValidation, async (req, res) => {
       isActive: true,
       isAccepted: false,
     });
-    console.log(pendingrequests)
+    console.log(pendingrequests);
     res.status(200).send(pendingrequests);
   } catch (err) {
     res.status(403).send(err);
   }
 });
 
-router.delete("/delete",async (req,res)=>{
+router.delete("/delete", async (req, res) => {
   const deleted = await RequestModel.deleteMany();
-  res.send("vayo vayo")
-})
-
+  res.send("vayo vayo");
+});
 
 export { router as requestRouter };
