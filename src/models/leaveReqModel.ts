@@ -41,6 +41,14 @@ const requestSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  position: {
+    type: String,
+    required: true,
+  },
+  phone: {
+    type: Number,
+    required: true,
+  },
 });
 
 const RequestModel = mongoose.model("requestModel", requestSchema);

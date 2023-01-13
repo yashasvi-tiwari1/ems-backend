@@ -3,6 +3,7 @@ import { Request, Response, NextFunction } from "express";
 
 const TokenValidation = (req: Request, res: Response, next: NextFunction) => {
   try {
+    console.log('token samma ta aaxa')
     const token: any = req.headers.authorization;
     console.log(token);
     let realtoken = token.slice(7);
@@ -20,7 +21,9 @@ const TokenValidation = (req: Request, res: Response, next: NextFunction) => {
       res.send("you are not elligible to perform this task");
     }
   } catch (err) {
+    console.log('yei bigrexa')
     res.status(401).send(err);
+
   }
 };
 

@@ -4,12 +4,13 @@ import TokenValidation from "../middleware/tokenvalidation";
 import { EmployeeModel } from "../models/employeeModel";
 const router = express.Router();
 
-router.get("/", TokenValidation, async (req, res) => {
+router.get("/", async (req, res) => {
   try {
-    const requests = RequestModel.find();
+    const requests = await RequestModel.find();
     res.status(200).send(requests);
   } catch (err) {
-    res.status(400).send(err);
+    console.log('error ma aaxa');
+    res.status(401).send(err);
   }
 });
 router.post("/add", async (req, res) => {
@@ -69,14 +70,16 @@ router.post("/add", async (req, res) => {
   }
 });
 
-router.put("/acccept/:id", TokenValidation, async (req, res) => {
+router.put("/accept/:id", TokenValidation, async (req, res) => {
   try {
     const accReq = await RequestModel.findByIdAndUpdate(
       req.params.id,
       req.body
     );
-    res.status(200);
+    console.log('yeta aaxa')
+    res.status(200).send("Request Accepted");
   } catch (err) {
+    console.log('uta aaxa')
     res.status(400).send(err);
   }
 });
@@ -86,8 +89,9 @@ router.put("/reject/:id", TokenValidation, async (req, res) => {
     const accReq = await RequestModel.findByIdAndUpdate(
       req.params.id,
       req.body
+
     );
-    res.status(200);
+    res.status(200).send("Request rejected");
   } catch (err) {
     res.status(400).send(err);
   }
@@ -105,4 +109,11 @@ router.get("/pending", TokenValidation, async (req, res) => {
     res.status(403).send(err);
   }
 });
+
+router.delete("/delete",async (req,res)=>{
+  const deleted = await RequestModel.deleteMany();
+  res.send("vayo vayo")
+})
+
+
 export { router as requestRouter };

@@ -41,8 +41,9 @@ router.get("/:position", [], async (req: Request, res: Response) => {
 router.post("/add", tokenvalidation, async (req, res) => {
   try {
     const { name, position, address, phone, gmail, date, role } = req.body;
-    const employeeDetail = await EmployeeModel.findOne({ gmail });
-    if (employeeDetail) {
+    const employeeDetail = await EmployeeModel.findOne({ gmail:gmail });
+    console.log(employeeDetail);
+    if (!employeeDetail) {
       const data = await new EmployeeModel({
         name: name,
         position: position,

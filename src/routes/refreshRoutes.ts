@@ -1,12 +1,14 @@
 import express from "express";
 import jsonwebtoken from "jsonwebtoken";
+import TokenValidation from "../middleware/tokenvalidation";
 
 const app = express();
 const router = express.Router();
 
 const accessSecretKey = process.env.ACCESS_TOKEN_SECRET;
-router.post("/", async (req, res) => {
+router.post("/", TokenValidation,async (req, res) => {
   try {
+    console.log('xiro xiro')
     const refToken: any = req.headers.authorization;
     const refreshToken = refToken.slice(7);
     console.log(refreshToken);
