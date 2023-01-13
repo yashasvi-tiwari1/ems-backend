@@ -1,6 +1,7 @@
 import express from "express";
 import { RequestModel } from "../models/leaveReqModel";
 import TokenValidation from "../middleware/tokenvalidation";
+import { EmployeeModel } from "../models/employeeModel";
 const router = express.Router();
 
 router.get("/", TokenValidation, async (req, res) => {
@@ -22,39 +23,46 @@ router.post("/add", async (req, res) => {
     gmail,
     department,
   } = req.body;
+  let employeeDetails = await EmployeeModel.findOne({ gmail });
   let isActive = true;
   let isAccepted = false;
-  if (
-    name &&
-    reason &&
-    leavedate &&
-    returndate &&
-    description &&
-    supervisor &&
-    gmail &&
-    department
-  ) {
-    if (gmail.match(/(^\w{0,100}@gmail.com$|^\w{0,100}@outlook.com$)/g)) {
-      const addreq = new RequestModel({
-        name,
-        reason,
-        leavedate,
-        returndate,
-        description,
-        isAccepted,
-        isActive,
-        supervisor,
-        department,
-        gmail,
-      });
-      try {
-        const request = await addreq.save();
-        res.status(201);
-      } catch (err) {
-        res.send(err);
+  if (employeeDetails) {
+    if (
+      name &&
+      reason &&
+      leavedate &&
+      returndate &&
+      description &&
+      supervisor &&
+      gmail &&
+      department
+    ) {
+      if (gmail.match(/(^\w{0,100}@gmail.com$|^\w{0,100}@outlook.com$)/g)) {
+        const addreq = new RequestModel({
+          name,
+          reason,
+          leavedate,
+          returndate,
+          description,
+          position: employeeDetails.position,
+          phone: employeeDetails.phone,
+          isAccepted,
+          isActive,
+          supervisor,
+          department,
+          gmail,
+        });
+        try {
+          const request = await addreq.save();
+          res.status(201).send("Request Submitted");
+        } catch (err) {
+          res.send(err);
+        }
+      } else {
+        res.status(401).send("Gmail format doesnot match");
       }
     } else {
-      res.status(401).send("Gmail format doesnot match");
+      res.status(401).send("You are not an employee");
     }
   } else {
     res.status(401).send("Fill up the form");
