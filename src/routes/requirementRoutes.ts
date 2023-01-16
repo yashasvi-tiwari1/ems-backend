@@ -1,6 +1,5 @@
 import express, { Request, Response } from "express";
 import { Requirement } from "../models/requerementmodel";
-import { RequestModel } from "../models/leaveReqModel";
 
 let router = express.Router();
 
@@ -101,3 +100,5 @@ router.get("/pending", async (req, res) => {
     res.status(401).send(err);
   }
 });
+
+export { router as requirementRouter };
