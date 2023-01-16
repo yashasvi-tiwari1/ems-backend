@@ -14,6 +14,7 @@ router.post("/add", Validation, async (req, res) => {
   const { username, gmail, password, confirmpassword } = req.body;
   const employee = await EmployeeModel.findOne({ gmail });
   const user = await User.findOne({ gmail });
+  console.log(user);
   if (employee) {
     if (!user) {
       const role = employee.role;

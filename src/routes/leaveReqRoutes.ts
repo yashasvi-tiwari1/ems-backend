@@ -20,7 +20,7 @@ router.get(
     try {
       const search = req.params.searchkeyword;
       const searchRequest = await RequestModel.find({
-        name: { $regex: ".*" + search + ".*" },
+        name: { $regex: new RegExp(".*" + search + ".*","i") },
       });
       res.status(200).send(searchRequest);
     } catch (err) {
@@ -108,10 +108,8 @@ router.put("/accept/:id", TokenValidation, async (req, res) => {
       req.params.id,
       req.body
     );
-    console.log("yeta aaxa");
     res.status(200).send("Request Accepted");
   } catch (err) {
-    console.log("uta aaxa");
     res.status(400).send(err);
   }
 });

@@ -19,7 +19,7 @@ router.get(
     try {
       const search = req.params.searchkeyword;
       const searchEmployee = await EmployeeModel.find({
-        name: { $regex: ".*" + search + ".*" },
+        name: { $regex: /".*" + search + ".*"/i, },
       });
       res.status(200).send(searchEmployee);
     } catch (err) {
