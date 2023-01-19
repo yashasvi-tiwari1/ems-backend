@@ -19,11 +19,24 @@ app.use("/request", requestRouter);
 app.use("/user", userRouter);
 app.use("/ref", refreshRouter);
 app.use("/requirement", requirementRouter);
+//
+mongodb: mongoose.set("strictQuery", true);
+var mongoUrl = "mongodb://localhost:27017/EmployeeMS";
 
-mongoose.set("strictQuery", true);
-mongoose.connect("mongodb://127.0.0.1:27017/EmployeeMS", () => {
-  console.log("connected to database");
-});
+var connectWithRetry = function () {
+  return mongoose.connect(mongoUrl, function (err) {
+    if (err) {
+      console.error(
+        "Failed to connect to mongo on startup - retrying in 5 sec",
+        err
+      );
+      setTimeout(connectWithRetry, 5000);
+    } else {
+      console.log("database connected");
+    }
+  });
+};
+connectWithRetry();
 
 app.listen(PORT, () => {
   console.log(`Server is listening on  http://localhost:${PORT}`);

@@ -45,17 +45,39 @@ router.get(
 );
 router.post("/add", async (req, res) => {
   try {
-    const { name, gmail, instrument, quantity, project } = req.body;
-    if (name && gmail && instrument && quantity && project) {
+    const {
+      name,
+      gmail,
+      item,
+      quantity,
+      purpose,
+      date,
+      supervisor,
+      department,
+    } = req.body;
+    if (
+      name &&
+      gmail &&
+      item &&
+      quantity &&
+      purpose &&
+      supervisor &&
+      department &&
+      date &&
+      quantity
+    ) {
       const isAccepted = false;
       const isActive = true;
       const isDelivered = false;
       const RequirementList = new Requirement({
         name,
         gmail,
-        instrument,
+        item,
         quantity,
-        project,
+        purpose,
+        date,
+        supervisor,
+        department,
         isAccepted,
         isActive,
         isDelivered,

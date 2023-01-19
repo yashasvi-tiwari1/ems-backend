@@ -10,7 +10,7 @@ let requirementSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  instrument: {
+  item: {
     type: String,
     required: true,
   },
@@ -19,6 +19,14 @@ let requirementSchema = new mongoose.Schema({
     required: true,
   },
   purpose: {
+    type: String,
+    required: true,
+  },
+  supervisor: {
+    type: String,
+    required: true,
+  },
+  department: {
     type: String,
     required: true,
   },
@@ -32,6 +40,10 @@ let requirementSchema = new mongoose.Schema({
   },
   isDelivered: {
     type: Boolean,
+    required: true,
+  },
+  date: {
+    type: Date,
     required: true,
   },
 });
